@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="id.faiz.www.qrcode">
 
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -11,13 +13,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
-            android:uiOptions="splitActionBarWhenNarrow"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data android:name="android.support.UI_OPTIONS"
-                android:value="splitActionBarWhenNarrow"/>
+        <activity android:name=".jsonChecker"></activity>
+        <activity
+            android:name=".scan_qr"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:uiOptions="splitActionBarWhenNarrow" />
+        <activity android:name=".MainActivity">
+            <meta-data
+                android:name="android.support.UI_OPTIONS"
+                android:value="splitActionBarWhenNarrow" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
