@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void launcActivity(Class<?> clss) {
-        String[] PERMISSIONS = {Manifest.permission.INTERNET,Manifest.permission.CAMERA,Manifest.permission.ACCESS_NETWORK_STATE};
+        String[] PERMISSIONS = {Manifest.permission.INTERNET,Manifest.permission.CAMERA,Manifest.permission.CAMERA};
         if (ContextCompat.checkSelfPermission(this, String.valueOf(PERMISSIONS))
                 != PackageManager.PERMISSION_GRANTED) {
             mAClass = clss;
@@ -50,9 +50,5 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "camera permission denied", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    public void Activityjson(View view) {
-        launcActivity(jsonChecker.class);
     }
 }
