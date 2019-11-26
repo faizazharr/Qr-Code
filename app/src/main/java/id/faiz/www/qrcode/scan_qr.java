@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -38,7 +40,7 @@ public class scan_qr extends AppCompatActivity implements ZXingScannerView.Resul
     private static final java.lang.String KEY_ID = "id";
     private static final java.lang.String KEY_NAME = "name";
     private ZXingScannerView mScannerView;
-    private Object String;
+    private Object WebView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,55 +90,25 @@ public class scan_qr extends AppCompatActivity implements ZXingScannerView.Resul
 
     @Override
     public void handleResult(Result rawResult) {
-        String regexStr = "^[0-9]*$";
-        String data = rawResult.getText(); // Prints scan results
-        if (data.trim().matches(regexStr) ){
-            int id = Integer.valueOf(data);
-            oneDataApi(id);
-        }else{
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Scan Result");
-            builder.setMessage("data salah silahkan scan ulang");
-            AlertDialog alert1 = builder.create();
-            alert1.show();
-            Log.e("error", "data input bukan angka");
-            mScannerView.resumeCameraPreview(this);
-        }
-
+        String valueUrl = rawResult.getText(); // Prints scan results
+//        if (valueUrl.length() < 45 ){
+//            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//            builder.setTitle("Scan Result");
+//            builder.setMessage("data yang anda masukkan tidak valid");
+//            AlertDialog alert1 = builder.create();
+//            alert1.show();
+//            Log.e("error", "data input bukan angka");
+//            mScannerView.resumeCameraPreview(this);
+//        }else{
+            Log.d("URL ", String.valueOf(rawResult));
+            checkData(valueUrl);
+//        }
     }
-    private void oneDataApi(int id){
-        boolean cek = true;
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
-        final String url = "https://drf-demo.herokuapp.com/api/universities/"+id+"/?format=json";
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        progressDialog.dismiss();
-                        try {
-                            Integer id = response.getInt(KEY_ID);
-                            String name = response.getString(KEY_NAME);
-                            StringBuilder textviewdata = new StringBuilder();
-                            textviewdata.append("id : " + id + "name :" + name + "\n\n");
-                            Toast.makeText(getApplicationContext(), textviewdata, Toast.LENGTH_SHORT).show();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
-                Toast.makeText(getApplicationContext(),
-                        "data tidak tercantum atau tidak di temukan", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
-
+    private void checkData(String URL){
+        Log.d("linkurl", URL);
+        Intent changeUrl = new Intent(scan_qr.this,show_tashih_page.class);
+        changeUrl.putExtra(show_tashih_page.URL_LINK, URL);
+        startActivity(changeUrl);
     }
 
 
