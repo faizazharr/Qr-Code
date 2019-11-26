@@ -36,11 +36,12 @@ import me.dm7.barcodescanner.core.IViewFinder;
 import me.dm7.barcodescanner.core.ViewFinderView;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
+import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
+
 public class scan_qr extends AppCompatActivity implements ZXingScannerView.ResultHandler{
     private static final java.lang.String KEY_ID = "id";
     private static final java.lang.String KEY_NAME = "name";
     private ZXingScannerView mScannerView;
-    private Object WebView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,23 +92,23 @@ public class scan_qr extends AppCompatActivity implements ZXingScannerView.Resul
     @Override
     public void handleResult(Result rawResult) {
         String valueUrl = rawResult.getText(); // Prints scan results
-//        if (valueUrl.length() < 45 ){
-//            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//            builder.setTitle("Scan Result");
-//            builder.setMessage("data yang anda masukkan tidak valid");
-//            AlertDialog alert1 = builder.create();
-//            alert1.show();
-//            Log.e("error", "data input bukan angka");
-//            mScannerView.resumeCameraPreview(this);
-//        }else{
+        if (valueUrl.trim().length() < 45){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Scan Result");
+            builder.setMessage("data yang anda masukkan tidak valid");
+            AlertDialog alert1 = builder.create();
+            alert1.show();
+            Log.e("error", "data input bukan angka");
+            mScannerView.resumeCameraPreview(this);
+        }else{
             Log.d("URL ", String.valueOf(rawResult));
             checkData(valueUrl);
-//        }
+        }
     }
-    private void checkData(String URL){
-        Log.d("linkurl", URL);
+    private void checkData(String urlscan){
+        Log.d("linkurl", urlscan);
         Intent changeUrl = new Intent(scan_qr.this,show_tashih_page.class);
-        changeUrl.putExtra(show_tashih_page.URL_LINK, URL);
+        changeUrl.putExtra(show_tashih_page.URL_LINK, urlscan);
         startActivity(changeUrl);
     }
 

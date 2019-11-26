@@ -20,7 +20,7 @@ public class show_tashih_page extends AppCompatActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
         // Tiga baris di bawah ini agar laman yang dimuat dapat
-        String jq = "jquery:function($(\"#content\").remove()";
+//        String jq = "jquery:function($(\"#content\").remove()";
         // melakukan zoom.
         webView.getSettings().setSupportZoom(true);
         webView.getSettings().setBuiltInZoomControls(true);
@@ -29,7 +29,25 @@ public class show_tashih_page extends AppCompatActivity {
         // Baris di bawah untuk menambahkan scrollbar di dalam WebView-nya
 
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        webView.setWebViewClient(new WebViewClient());
+        webView.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                    view.loadUrl("javascript:$(document).ready(function() {\n" +
+                            "  $('#content').remove();\n" +
+                            "  $('.navbar-toggler-icon').remove();\n" +
+                            "  $('.purechat-launcher-message').remove();\n" +
+                            "  $('#navbarSupportedContent').remove();\n" +
+                            "  $('#kotak-login-res').remove();\n" +
+                            "  $('#btnLogin').remove();\n" +
+                            "  $('#btnRegistrasi').remove();\n" +
+                            "  $('#myBtn').remove();\n" +
+                            "  $('#myBtn2').remove();\n" +
+                            "  $('#footerBox').remove();\n" +
+                            "})");
+            }
+        });
+//        webView.loadUrl(jq);
         webView.loadUrl(getIntent().getStringExtra(URL_LINK));
     }
 }
